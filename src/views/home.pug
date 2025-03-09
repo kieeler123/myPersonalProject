@@ -1,0 +1,22 @@
+doctype html
+html
+head
+title #{title}
+link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
+link(rel="stylesheet" href="/style.css")
+body
+  div.main-title
+    a(href="/")
+      i.fa-brands.fa-youtube 
+    h1 #{title}
+  .video-container
+    if items.length > 0
+      each video in items
+        // ✅ 클릭하면 /watch 페이지로 이동
+        a(href=`/watch?id=${video.id}`)
+          .video-card
+            img.thumbnail(src=video.image, alt=video.name)
+            .video-info
+              h3.video-title= video.name
+    else
+      p 데이터가 없습니다.
