@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../firebaseConfig");
 
-let title = "VUTUBE";
+const API_KEY = process.env.YOUTUBE_API_KEY; // YouTube API 키 입력
+
+let mainTitle = "VUTUBE";
+let searchTitle = "Youtube Search"
 router.get("/", async (req, res) => {
     try {
         const collections = await db.listCollections();
@@ -16,7 +19,7 @@ router.get("/", async (req, res) => {
   
       console.log("🔥 Firestore에서 가져온 데이터:", items); // 터미널에서 확인
   
-      res.render("home", { title: title, items });
+      res.render("home", { mainTitle, items });
     } catch (error) {
       console.error("❌ Firestore 오류:", error);
       res.status(500).send("서버 오류: " + error.message);
@@ -37,11 +40,36 @@ router.get("/watch", async (req, res) => {
       }
   
       const videoData = videoDoc.data();
-      res.render("watch", { title: title, video: videoData }); // ✅ watch.pug로 데이터 전달
+      res.render("watch", { mainTitle, video: videoData }); // ✅ watch.pug로 데이터 전달
     } catch (error) {
       console.error("❌ Firestore에서 영상 불러오기 오류:", error);
       res.status(500).send("서버 오류");
     }
+});
+router.get("/storage", (req, res) => res.render("storage"))
+
+router.get("/search", async (req, res) => {
+  const query = req.query.q;
+  if (!query) {
+      return res.render("youtubeSearch", { mainTitle, searchTitle, videos: [], error: "검색어를 입력하세요." });
+  }
+
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(query)}&key=${API_KEY}`;
+
+  try {
+      const axios = require("axios");  // axios를 가져오기
+      const response = await axios.get(url);
+      const videos = response.data.items.map(item => ({
+          title: item.snippet.title,
+          videoId: item.id.videoId,
+          thumbnail: item.snippet.thumbnails.medium.url
+      }));
+
+      res.render("youtubeSearch", { mainTitle, searchTitle, videos });
+  } catch (error) {
+      console.error(error);
+      res.render("youtubeSearch", { mainTitle, searchTitle, videos: [], error: "검색 중 오류가 발생했습니다." });
+  }
 });
 
 module.exports = router;

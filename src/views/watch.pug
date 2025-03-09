@@ -1,14 +1,7 @@
-doctype html
-html
-head
-title #{title} | #{video.name}
-link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
-link(rel="stylesheet" href="/style.css")
-body
-    div.main-title
-        a(href="/")
-            i.fa-brands.fa-youtube 
-        h1= video.name
+extends ./main
+block script
+    title #{mainTitle} | #{video.name}
+block content
     .video-container
         iframe(
         width="100%",

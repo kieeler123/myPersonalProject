@@ -1,0 +1,14 @@
+extends ./main
+block script
+    link(rel="stylesheet", href="/searchStyle.css")
+    title #{mainTitle} | #{searchTitle}
+block content
+    if error
+      p(style="color: red")= error
+
+    .video-container
+      each video in videos
+        .video
+          a(href=`https://www.youtube.com/watch?v=${video.videoId}`)
+            img.thumbnail(src=video.thumbnail, alt=video.title)
+          h3= video.title
