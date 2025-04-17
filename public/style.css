@@ -26,6 +26,7 @@ a.button {
     border-radius: 4px;
 }
 .post-list li {
+    list-style: none;
     margin-bottom: 15px;
 }
 input, textarea {
@@ -45,6 +46,9 @@ button {
     cursor: pointer;
 }
 button:hover {
-    background-color: #1c86ee;
+    background-color: #1e90ff;
 }
-    
+a{
+    text-decoration: none;
+    color: #1e90ff;
+}

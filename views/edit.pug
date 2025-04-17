@@ -1,0 +1,7 @@
+extends layout
+block content
+    h1 #{title} 수정하기
+    form(method="POST" action=`/edit/${title}`)
+        textarea(name="content")= content
+        br
+        button(type="submit") 수정 완료

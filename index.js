@@ -1,4 +1,4 @@
-// 간단한 Node.js + Express 블로그 템플릿
+// 간단한 Node.js + Express 블로그 템플릿 + 수정/삭제 기능 포함
 
 const express = require('express');
 const fs = require('fs');
@@ -45,6 +45,30 @@ app.get('/post/:title', (req, res) => {
   if (!fs.existsSync(filePath)) return res.send('글을 찾을 수 없습니다.');
   const content = fs.readFileSync(filePath, 'utf-8');
   res.render('post', { title: req.params.title, content });
+});
+
+// 글 수정 폼
+app.get('/edit/:title', (req, res) => {
+  const filePath = path.join(POSTS_DIR, `${req.params.title}.txt`);
+  if (!fs.existsSync(filePath)) return res.send('글을 찾을 수 없습니다.');
+  const content = fs.readFileSync(filePath, 'utf-8');
+  res.render('edit', { title: req.params.title, content });
+});
+
+// 글 수정 처리
+app.post('/edit/:title', (req, res) => {
+  const { content } = req.body;
+  const filePath = path.join(POSTS_DIR, `${req.params.title}.txt`);
+  if (!fs.existsSync(filePath)) return res.send('글을 찾을 수 없습니다.');
+  fs.writeFileSync(filePath, content);
+  res.redirect(`/post/${req.params.title}`);
+});
+
+// 글 삭제
+app.post('/delete/:title', (req, res) => {
+  const filePath = path.join(POSTS_DIR, `${req.params.title}.txt`);
+  if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+  res.redirect('/');
 });
 
 app.listen(PORT, () => {
