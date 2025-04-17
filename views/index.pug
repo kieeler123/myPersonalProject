@@ -1,11 +1,9 @@
-html
-    head
-        title 블로그 홈
-    body
-        h1 블로그 글 목록
-        a(href="/new") 새 글 작성
-        ul
-            each post in posts
-                li
-                    a(href=`/post/${post.title}`) #{post.title}
-                    p #{post.content}
+extends layout
+block content
+  h1 블로그 글 목록
+  a.button(href="/new") 새 글 작성
+  ul.post-list
+    each post in posts
+      li
+        a(href=`/post/${post.title}`)= post.title
+        p= post.content
