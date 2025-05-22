@@ -6,6 +6,8 @@ import { darkTheme, lightTheme } from "./theme.ts";
 import { Home } from "./router/home";
 import Genre from "./router/Genre.tsx";
 import Watch from "./router/Watch.tsx";
+import Series from "./router/Series.tsx";
+import Season from "./router/Season.tsx";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -79,6 +81,8 @@ function App() {
           <Route path="/" Component={Home} element={<Home />} />
           <Route path="/watch/:id" Component={Watch} element={<Watch />} />
           <Route path="/genre/:genreId" Component={Genre} element={<Genre />} />
+          <Route path="/series/:title" Component={Series} element={<Series />} />
+          <Route path="/season/:title/:season" Component={Season} element={<Season />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
