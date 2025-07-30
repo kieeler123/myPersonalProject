@@ -1,0 +1,58 @@
+.text-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 14px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.text-content {
+  font-size: 16px;
+  color: #222;
+  word-break: break-word;
+}
+
+.text-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.action-button.edit {
+  color: #007bff;
+}
+
+.action-button.delete {
+  color: #dc3545;
+}
+
+.action-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 다크모드 대응 */
+.dark .text-card {
+  background-color: #2e2e2e;
+  border-color: #444;
+}
+
+.dark .text-content {
+  color: #f1f1f1;
+}
+
+.dark .action-button:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
