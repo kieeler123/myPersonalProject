@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>주가 차트 (다중 종목)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+
+      canvas {
+        max-width: 100%;
+        height: auto;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      li {
+        cursor: pointer;
+        color: cyan;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2 id="chartTitle">📈 종목별 주가 차트 (프록시 서버 사용)</h2>
+    <ul id="symbol">
+      <li data-symbol="LOW">LOW</li>
+      <li data-symbol="AAPL">AAPL</li>
+      <li data-symbol="AMZN">AMZN</li>
+      <li data-symbol="AVGO">AVGO</li>
+      <li data-symbol="BKNG">BKNG</li>
+      <li data-symbol="GOOGL">GOOGL</li>
+      <li data-symbol="JNJ">JNJ</li>
+      <li data-symbol="JPM">JPM</li>
+      <li data-symbol="LLY">LLY</li>
+      <li data-symbol="META">META</li>
+      <li data-symbol="MSFT">MSFT</li>
+      <li data-symbol="NFLX">NFLX</li>
+      <li data-symbol="PEP">PEP</li>
+      <li data-symbol="PG">PG</li>
+      <li data-symbol="SPOT">SPOT</li>
+      <li data-symbol="TXN">TXN</li>
+      <li data-symbol="UNH">UNH</li>
+      <li data-symbol="ASML.AS">ASML</li>
+      <li data-symbol="MC.PA">LVMH</li>
+      <li data-symbol="TTE.PA">TTE</li>
+      <li data-symbol="ULVR.L">Unilever</li>
+      <li data-symbol="2914.T">Japan Tobacco</li>
+      <li data-symbol="6861.T">Keyence</li>
+      <li data-symbol="8031.T">Mitsui & Co.</li>
+    </ul>
+
+    <canvas id="chart"></canvas>
+
+    <script>
+      const chartEl = document.getElementById('chart');
+      const titleEl = document.getElementById('chartTitle');
+      let chartInstance;
+
+      function loadChart(symbol) {
+        fetch(`http://localhost:3000/chart/${symbol}?interval=1d&range=6mo`)
+          .then((res) => (res.ok ? res.json() : Promise.reject('API 오류')))
+          .then((data) => {
+            const result = data.chart?.result?.[0];
+            if (!result) {
+              alert('📛 유효하지 않은 종목입니다: ' + symbol);
+              return;
+            }
+
+            const timestamps = result.timestamp;
+            const prices = result.indicators.adjclose[0].adjclose;
+            const labels = timestamps.map((ts) =>
+              new Date(ts * 1000).toLocaleDateString()
+            );
+
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(chartEl, {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    label: `${symbol} 조정 종가`,
+                    data: prices,
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0,0,255,0.1)',
+                    fill: true,
+                    tension: 0.1,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                scales: {
+                  x: { title: { display: true, text: '날짜' } },
+                  y: { title: { display: true, text: '가격 (USD)' } },
+                },
+              },
+            });
+
+            titleEl.textContent = `📈 ${symbol} 주가 차트 (프록시 서버 사용)`;
+          })
+          .catch((err) => {
+            console.error('차트 로딩 실패:', err);
+            alert('📛 데이터를 불러오는 데 실패했습니다.');
+          });
+      }
+
+      document.getElementById('symbol').addEventListener('click', (e) => {
+        const clickedSymbol = e.target.dataset.symbol;
+        if (clickedSymbol) {
+          loadChart(clickedSymbol);
+        }
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const initSymbol = params.get('symbol') || 'AAPL';
+      loadChart(initSymbol);
+    </script>
+  </body>
+</html>

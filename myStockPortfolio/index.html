@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📊 배당 성장 포트 대시보드</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      input,
+      select {
+        margin-right: 10px;
+        padding: 5px;
+      }
+      a {
+        color: aqua;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📊 배당 성장 포트 대시보드</h1>
+
+    <div>
+      <input type="text" id="search" placeholder="종목 검색 (예: AAPL, LOW)" />
+      <select id="countryFilter">
+        <option value="">전체 국가</option>
+      </select>
+      <select id="sectorFilter">
+        <option value="">전체 섹터</option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>국가</th>
+          <th>종목</th>
+          <th>섹터</th>
+          <th>지급 주차</th>
+          <th>배당 성장률</th>
+          <th>주가 성장률</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+
+    <script>
+      let allData = [];
+
+      function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        data.forEach((item) => {
+          const row = `<tr>
+            <td>${item['국가']}</td>
+            <td>
+              <a href="chart.html?symbol=${item['티커'] || ''}">${item['종목']}</a>
+            </td>
+            <td>${item['섹터']}</td>
+            <td>${item['지급 주차 분류']}</td>
+            <td>${item['배당 성장률 (5Y CAGR)']}%</td>
+            <td>${item['주가 성장률 (5Y CAGR)']}%</td>
+          </tr>`;
+          tbody.insertAdjacentHTML('beforeend', row);
+        });
+      }
+
+      function applyFilters() {
+        const country = document.getElementById('countryFilter').value;
+        const sector = document.getElementById('sectorFilter').value;
+        const search = document.getElementById('search').value.toLowerCase();
+
+        const filtered = allData.filter((item) => {
+          return (
+            (!country || item['국가'] === country) &&
+            (!sector || item['섹터'] === sector) &&
+            (!search || item['종목'].toLowerCase().includes(search))
+          );
+        });
+
+        renderTable(filtered);
+      }
+
+      fetch('배당성장포트_WEB용_CLEAN_v4_with_ticker.json')
+        .then((res) => res.json())
+        .then((data) => {
+          allData = data;
+          renderTable(allData);
+
+          const countries = [...new Set(data.map((d) => d['국가']))];
+          const sectors = [...new Set(data.map((d) => d['섹터']))];
+          const countrySelect = document.getElementById('countryFilter');
+          const sectorSelect = document.getElementById('sectorFilter');
+
+          countries.forEach((c) => {
+            countrySelect.insertAdjacentHTML(
+              'beforeend',
+              `<option value="${c}">${c}</option>`
+            );
+          });
+          sectors.forEach((s) => {
+            sectorSelect.insertAdjacentHTML(
+              'beforeend',
+              `<option value="${s}">${s}</option>`
+            );
+          });
+        });
+
+      document.getElementById('search').addEventListener('input', applyFilters);
+      document
+        .getElementById('countryFilter')
+        .addEventListener('change', applyFilters);
+      document
+        .getElementById('sectorFilter')
+        .addEventListener('change', applyFilters);
+    </script>
+  </body>
+</html>
