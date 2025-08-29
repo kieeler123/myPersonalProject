@@ -1,0 +1,21 @@
+{
+  "name": "vutube",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.2.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.9",
+    "pug": "^3.0.3"
+  }
+}

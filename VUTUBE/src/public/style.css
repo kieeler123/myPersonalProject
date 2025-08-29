@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.fa-brands.fa-youtube {
+    font-size: 60px;
+    color: blue;
+    cursor: pointer;
+}
+
+.main-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.video-title {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 15px; /* 아이콘과 텍스트 사이 간격 */
+}
+
+.video-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.video-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.video-card:hover {
+    transform: scale(1.05);
+}
+
+.thumbnail {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.video-info {
+    padding: 10px;
+}
+
+.video { 
+    width: 300px; 
+    margin: 10px; 
+    border-radius: 10px; 
+    padding: 10px; 
+    box-shadow: 0 2px 5px rgba(80, 73, 73, 0.3);
+}
+
+.channel-name {
+    font-size: 14px;
+    color: #555;
+}
+
+.meta-info {
+    font-size: 12px;
+    color: #777;
+}
+  
+a{
+    text-decoration: none;
+    color: cadetblue;
+}
+
+.file-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.file-item {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.file-item img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.file-item a {
+    display: block;
+    text-decoration: none;
+    font-weight: bold;
+    color: #007bff;
+    margin-top: 5px;
+}
+
+input { 
+    padding: 10px; 
+    width: 300px; 
+}
+
+button { 
+    padding: 10px; 
+    margin-left: 10px; 
+    cursor: pointer;
+}
