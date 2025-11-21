@@ -60,7 +60,7 @@ const App = () => {
       if (filter === "active") return !t.completed;
       return true;
     })
-    .filter((t) => t.text.toLowerCase().includes(search.toLowerCase()));
+    .filter((t) => t.text?.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="max-w-xl mx-auto p-4">
