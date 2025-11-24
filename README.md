@@ -1,12 +1,8 @@
----
-
 ## ✅ 기술 스택 범위
 
 - **Frontend**: React, TypeScript, Vite, TailwindCSS, Zustand, Vue, Pinia, Next.js
 - **Backend**: Express, MongoDB, Firebase, Supabase, NestJS
 - **기타 도구**: Axios, Jest, GitHub Actions, Vercel, Netlify
-
----
 
 ## 💬 회고/기록 목적
 
@@ -31,11 +27,3 @@
 ---
 
 📌 GitHub 주소: https://github.com/kieeler123/myPersonalProject
-
-# 저장
-
-readme_path = "/mnt/data/README-myPersonalProject.md"
-with open(readme_path, "w", encoding="utf-8") as f:
-f.write(project_readme)
-
-readme_path
